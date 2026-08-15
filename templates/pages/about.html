@@ -1,0 +1,68 @@
+<div class="about-grid">
+  <article class="about-card">
+    <div class="about-photo">
+      <img src="/images/about.jpg" width="1000" height="1500" alt="Neatly Nash founder organizing a pantry in a real kitchen" loading="eager">
+    </div>
+    <div class="about-copy">
+      <h1 class="card-title">I'm the friend people call to help them sort out a closet.</h1>
+      <p>For years I've done this for family and friends. A pantry here, a garage there, a whole playroom the week before a baby came. It got to the point where people were asking to pay me. So I made it a real thing.<br><br>Neatly Nash is new. What that gets you is me, on every job, start to finish. No crew, no handing it off, and I care a lot about the ones I do first.</p>
+      <p>I'm Krista, a mom in Mount Juliet with two kids and a laundry room that gets away from me too. I work in real houses, and I set things up for the week you actually have, not the one you wish you had.</p>
+    </div>
+  </article>
+
+  <div class="booking-card" id="book">
+    <h2 class="card-title">Book a walkthrough</h2>
+    <p class="body-md intro">Twenty minutes. You'll have a price from me by the end of the day.</p>
+
+    <form name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-booking-form>
+      <input type="hidden" name="form-name" value="booking">
+      <p class="visually-hidden" aria-hidden="true">
+        <label>Don't fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+      </p>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="label" for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="First and last" autocomplete="name" required>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="label" for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email" required>
+          </div>
+          <div class="form-field">
+            <label class="label" for="neighborhood">Neighborhood</label>
+            <input type="text" id="neighborhood" name="neighborhood" placeholder="Mount Juliet" autocomplete="address-level2">
+          </div>
+        </div>
+        <div class="form-field">
+          <span class="label" id="start-label">Where should we start?</span>
+          <div class="chip-group" role="group" aria-labelledby="start-label">
+            <input class="chip-input" type="checkbox" id="chip-pantry" name="start" value="Pantry" checked>
+            <label class="chip" for="chip-pantry">Pantry</label>
+            <input class="chip-input" type="checkbox" id="chip-closet" name="start" value="Closet">
+            <label class="chip" for="chip-closet">Closet</label>
+            <input class="chip-input" type="checkbox" id="chip-mudroom" name="start" value="Mudroom">
+            <label class="chip" for="chip-mudroom">Mudroom</label>
+            <input class="chip-input" type="checkbox" id="chip-playroom" name="start" value="Playroom">
+            <label class="chip" for="chip-playroom">Playroom</label>
+            <input class="chip-input" type="checkbox" id="chip-wholehome" name="start" value="Whole home">
+            <label class="chip" for="chip-wholehome">Whole home</label>
+            <input class="chip-input" type="checkbox" id="chip-dorm" name="start" value="Dorm room">
+            <label class="chip" for="chip-dorm">Dorm room</label>
+            <input class="chip-input" type="checkbox" id="chip-notsure" name="start" value="Not sure yet">
+            <label class="chip" for="chip-notsure">Not sure yet</label>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Request my quote</button>
+        <p class="reassurance">No sales call. If I'm not the right fit, I'll tell you.</p>
+        <p class="towns-inline">Nashville &middot; Franklin &middot; Brentwood &middot; Nolensville<br>Hendersonville &middot; Mount Juliet &middot; Gallatin &middot; Lebanon</p>
+      </div>
+    </form>
+
+    <div class="form-success" role="status">
+      <h3 class="card-title">Got it &mdash; thank you.</h3>
+      <p class="body-sm">I'll text or email you a price by the end of the day. If it's urgent, call or text (615) 555-0148.</p>
+    </div>
+  </div>
+</div>
