@@ -223,7 +223,7 @@ def mark_current_nav(header_html, url_path):
     return header_html.replace(link, f'{link} aria-current="page"')
 
 
-def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None, noindex=False):
+def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None, noindex=False, extra_head=""):
     if noindex:
         indexing = '<meta name="robots" content="noindex">'
     else:
@@ -241,6 +241,7 @@ def render_page(*, url_path, title, description, header_partial, content_html, e
         TITLE=html.escape(title),
         DESCRIPTION=html.escape(description),
         INDEXING=indexing,
+        EXTRA_HEAD=extra_head,
         OG_TITLE=html.escape(title),
         SCHEMA=schema_script(*schemas),
         HEADER=mark_current_nav(read(f"partials/{header_partial}"), url_path),
@@ -281,7 +282,7 @@ def fingerprint_asset_urls():
             hashes[url] = hashlib.sha256(asset.read_bytes()).hexdigest()[:10]
         return f"{url}?v={hashes[url]}"
 
-    for path in [*DIST.glob("css/*.css"), *DIST.rglob("*.html")]:
+    for path in [*DIST.glob("css/*.css"), *DIST.rglob("*.html"), DIST / "site.webmanifest"]:
         path.write_text(ASSET_URL.sub(versioned, path.read_text()))
 
 
@@ -305,6 +306,8 @@ def build():
             url_path="", title="Home Organizer in Nashville, TN | Neatly Nash",
             description="Home organizing for kitchens, closets, and drop zones across Nashville, Franklin, Brentwood, and five nearby towns. Free walkthrough, same-day quote.",
             content="pages/index.html",
+            # The hero headline's italic line is the only above-the-fold use of this face.
+            extra_head='<link rel="preload" href="/fonts/cormorant-garamond-500-italic.woff2" as="font" type="font/woff2" crossorigin>',
         ),
         dict(
             url_path="services", title="Home Organizing Services | Neatly Nash",
@@ -340,6 +343,7 @@ def build():
             header_partial="header.html",
             content_html=content,
             extra_schema=p.get("extra_schema"),
+            extra_head=p.get("extra_head", ""),
         )
         write_page(p["url_path"], page_html)
         urls.append(p["url_path"])
