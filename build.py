@@ -206,6 +206,11 @@ def read(path):
     return (TEMPLATES / path).read_text()
 
 
+def mark_current_nav(header_html, url_path):
+    link = f'class="nav-link" href="/{url_path}/"'
+    return header_html.replace(link, f'{link} aria-current="page"')
+
+
 def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None, noindex=False):
     if noindex:
         indexing = '<meta name="robots" content="noindex">'
@@ -226,7 +231,7 @@ def render_page(*, url_path, title, description, header_partial, content_html, e
         INDEXING=indexing,
         OG_TITLE=title,
         SCHEMA=schema_script(*schemas),
-        HEADER=read(f"partials/{header_partial}"),
+        HEADER=mark_current_nav(read(f"partials/{header_partial}"), url_path),
         CONTENT=content_html,
         FOOTER=Template(read("partials/footer.html")).substitute(YEAR=date.today().year),
     )
