@@ -22,30 +22,40 @@
   var form = document.querySelector('form[data-booking-form]');
   if (form) {
     var successEl = document.querySelector('.form-success');
+    var submitBtn = form.querySelector('button[type="submit"]');
 
     function fieldError(field, message) {
       clearFieldError(field);
-      if (!message) return;
       var err = document.createElement('div');
       err.className = 'form-error';
+      err.id = field.id + '-error';
       err.textContent = message;
       field.insertAdjacentElement('afterend', err);
+      field.setAttribute('aria-invalid', 'true');
+      field.setAttribute('aria-describedby', err.id);
     }
     function clearFieldError(field) {
       var next = field.nextElementSibling;
+      if (next && next.classList.contains('form-error')) next.remove();
+      field.removeAttribute('aria-invalid');
+      field.removeAttribute('aria-describedby');
+    }
+    function clearSubmitError() {
+      var next = submitBtn.nextElementSibling;
       if (next && next.classList.contains('form-error')) next.remove();
     }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      clearSubmitError();
 
       var name = form.querySelector('#name');
       var email = form.querySelector('#email');
-      var valid = true;
+      var invalid = [];
 
       if (!name.value.trim()) {
         fieldError(name, 'Please enter your name.');
-        valid = false;
+        invalid.push(name);
       } else {
         clearFieldError(name);
       }
@@ -53,14 +63,16 @@
       var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email.value.trim() || !emailPattern.test(email.value.trim())) {
         fieldError(email, 'Please enter a valid email.');
-        valid = false;
+        invalid.push(email);
       } else {
         clearFieldError(email);
       }
 
-      if (!valid) return;
+      if (invalid.length) {
+        invalid[0].focus();
+        return;
+      }
 
-      var submitBtn = form.querySelector('button[type="submit"]');
       submitBtn.disabled = true;
 
       var data = new FormData(form);
@@ -72,11 +84,20 @@
         .then(function (res) {
           if (!res.ok) throw new Error('Form submit failed: ' + res.status);
           form.classList.add('is-hidden');
-          if (successEl) successEl.classList.add('is-visible');
+          if (successEl) {
+            successEl.classList.add('is-visible');
+            var heading = successEl.querySelector('h3');
+            heading.setAttribute('tabindex', '-1');
+            heading.focus();
+          }
         })
         .catch(function () {
           submitBtn.disabled = false;
-          fieldError(email, 'Something went wrong sending this — please text or call instead.');
+          var err = document.createElement('div');
+          err.className = 'form-error';
+          err.setAttribute('role', 'alert');
+          err.textContent = 'Something went wrong sending this. Please text or call (615) 555-0148 instead.';
+          submitBtn.insertAdjacentElement('afterend', err);
         });
     });
   }

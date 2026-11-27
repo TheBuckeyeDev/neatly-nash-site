@@ -654,6 +654,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .form-success .card-title { font-size: 26px; margin-bottom: 8px; }
 .form-success.is-visible { display: block; }
+.form-success h3:focus { outline: none; }
 .booking-card form.is-hidden { display: none; }
 .form-error {
   font-size: 13px; color: #a5432a; margin-top: -6px;
