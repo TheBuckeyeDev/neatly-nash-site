@@ -244,6 +244,7 @@ def build():
     shutil.copytree(STATIC / "css", DIST / "css")
     shutil.copytree(STATIC / "js", DIST / "js")
     shutil.copytree(STATIC / "images", DIST / "images")
+    shutil.copytree(STATIC / "fonts", DIST / "fonts")
 
     urls = []
 
