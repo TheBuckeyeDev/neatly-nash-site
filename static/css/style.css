@@ -1,3 +1,21 @@
+/* Self-hosted Google Fonts (latin subset, SIL OFL) */
+@font-face {
+  font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url(/fonts/cormorant-garamond-600.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 500; font-display: swap;
+  src: url(/fonts/cormorant-garamond-500-italic.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Jost'; font-style: normal; font-weight: 300 600; font-display: swap;
+  src: url(/fonts/jost-variable.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Outfit'; font-style: normal; font-weight: 200; font-display: swap;
+  src: url(/fonts/outfit-200.woff2) format('woff2');
+}
+
 /* ==========================================================================
    Neatly Nash — design tokens
    Source: Handoff README (Design Tokens) + Neatly Nash 01/03/07 .dc.html
@@ -15,7 +33,11 @@
   --cream-warm: #F3EBDE;
   --tan: #C68A50;
   --tan-mid: #A98C6A;
-  --tan-label: #A08962;
+  /* Text-on-cream variants of the tans/sage, darkened just enough for WCAG AA contrast. */
+  --tan-label: #786749;
+  --tan-eyebrow: #7B654D;
+  --tan-accent-text: #AF7A47;
+  --sage-label: #5E6D63;
   --rule: #E0CDAE;
   --rule-light: #EFE3D0;
   --rule-lighter: #F2E9DA;
@@ -24,7 +46,7 @@
   --ink-body: #3a3128;
   --ink-mid: #5c5245;
   --ink-muted: #6b6053;
-  --ink-faint: #8b7c68;
+  --ink-faint: #746857;
   --photo-fallback: #DCD3C4;
 
   --font-display: 'Cormorant Garamond', serif;
@@ -51,6 +73,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
+picture { display: contents; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }
 h1, h2, h3, p, dl, dd { margin: 0; }
@@ -83,7 +106,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-size: 12px;
   letter-spacing: .3em;
   text-transform: uppercase;
-  color: var(--tan-mid);
+  color: var(--tan-eyebrow);
   font-weight: 500;
 }
 .display-1 {
@@ -96,7 +119,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .display-1 em, .display-2 em, .section-title em {
   font-style: italic;
   font-weight: 500;
-  color: var(--tan);
+  color: var(--tan-accent-text);
 }
 .page-h1 {
   font-family: var(--font-display);
@@ -459,8 +482,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .project-body .card-title { font-size: 26px; margin-bottom: 18px; }
 .before-now { display: grid; grid-template-columns: 64px 1fr; gap: 12px 16px; align-items: baseline; }
 .ba-label { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; }
-.ba-label.before { color: #B3A48C; }
-.ba-label.now { color: var(--sage-deep); }
+.ba-label.before { color: var(--ink-faint); }
+.ba-label.now { color: var(--sage-label); }
 .ba-text { font-size: 14.5px; line-height: 1.65; font-weight: 400; color: var(--ink-faint); }
 .ba-text.now { font-size: 15px; color: var(--ink-body); }
 .ba-divider { grid-column: 1 / -1; height: 1px; background: var(--rule-light); }
@@ -589,7 +612,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .footer-brand .logo span { font-size: 26px; text-indent: 0; }
 .footer-brand .logo .logo-neatly, .footer-brand .logo .logo-nash { color: var(--cream); }
 .footer-brand p { margin-top: 14px; font-size: 13.5px; line-height: 1.7; color: #EFE2CC; font-weight: 300; max-width: 32ch; }
-.footer-col h4 {
+.footer-col h2 {
   font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
   color: var(--melon); font-weight: 600; margin-bottom: 14px;
 }
