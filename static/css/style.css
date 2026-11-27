@@ -686,6 +686,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .town-split h2 { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.15; color: var(--ink); margin-bottom: 8px; }
 .town-split .body-sm { font-size: 14.5px; line-height: 1.75; text-wrap: pretty; }
+.not-found { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; }
+.not-found .eyebrow { color: #E4D6C2; }
+.not-found .section-title { margin-top: 14px; }
+.not-found-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .town-cta { display: flex; gap: 14px 22px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .town-cta .sms-line { font-size: 13.5px; color: #E4D6C2; font-weight: 300; border-bottom: 1px solid rgba(228, 214, 194, .35); padding-bottom: 2px; }
 .town-cta .sms-line:hover { color: var(--cream); border-color: var(--melon); }
