@@ -297,6 +297,7 @@ def build():
     shutil.copytree(STATIC / "images", DIST / "images")
     shutil.copytree(STATIC / "fonts", DIST / "fonts")
     shutil.copy(STATIC / "site.webmanifest", DIST / "site.webmanifest")
+    shutil.copy(STATIC / "favicon.ico", DIST / "favicon.ico")
 
     urls = []
 

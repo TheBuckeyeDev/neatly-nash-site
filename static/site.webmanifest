@@ -3,7 +3,8 @@
   "short_name": "Neatly Nash",
   "icons": [
     { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "theme_color": "#63421F",
   "background_color": "#FBF7EE",
