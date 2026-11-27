@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Static file server for dist/ that avoids os.getcwd() (broken in this sandbox)."""
+"""Static file server for dist/ that avoids os.getcwd() (broken in some sandboxes)."""
 import functools
 import http.server
+from pathlib import Path
 
-DIST = "/Users/nicholashalliwell/Downloads/design_handoff_neatly_nash_site/site/dist"
+DIST = str(Path(__file__).resolve().parent / "dist")
 Handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=DIST)
 
 if __name__ == "__main__":
