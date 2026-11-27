@@ -206,8 +206,15 @@ def read(path):
     return (TEMPLATES / path).read_text()
 
 
-def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None):
-    canonical = f"{SITE_URL}/{url_path}".rstrip("/") + "/" if url_path else f"{SITE_URL}/"
+def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None, noindex=False):
+    if noindex:
+        indexing = '<meta name="robots" content="noindex">'
+    else:
+        canonical = f"{SITE_URL}/{url_path}".rstrip("/") + "/" if url_path else f"{SITE_URL}/"
+        indexing = (
+            f'<link rel="canonical" href="{canonical}">\n'
+            f'<meta property="og:url" content="{canonical}">'
+        )
     schemas = [local_business_schema()]
     if extra_schema:
         schemas.append(extra_schema)
@@ -216,7 +223,7 @@ def render_page(*, url_path, title, description, header_partial, content_html, e
     page = base.substitute(
         TITLE=title,
         DESCRIPTION=description,
-        CANONICAL=canonical,
+        INDEXING=indexing,
         OG_TITLE=title,
         SCHEMA=schema_script(*schemas),
         HEADER=read(f"partials/{header_partial}"),
@@ -344,6 +351,7 @@ def build():
         description="The page you're looking for doesn't exist. Head back to Neatly Nash home organizing in Nashville, TN.",
         header_partial="header.html",
         content_html=read("pages/404.html"),
+        noindex=True,
     )
     (DIST / "404.html").write_text(not_found_html)
 
