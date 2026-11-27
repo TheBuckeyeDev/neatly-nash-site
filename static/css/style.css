@@ -153,6 +153,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-weight: 600;
   color: var(--tan-label);
 }
+.label-optional { font-weight: 400; letter-spacing: .06em; text-transform: none; }
 
 /* ==========================================================================
    Layout helpers
@@ -395,6 +396,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .work-gallery-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 26px; flex-wrap: wrap; gap: 10px; }
 .work-gallery-head .section-title { font-size: 36px; }
 .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.photo-grid:focus { outline: none; }
+.photo-grid:focus-visible { outline: 2px solid var(--tan); outline-offset: 4px; border-radius: 12px; }
 .photo-tile {
   aspect-ratio: 4/5;
   border-radius: 12px;

@@ -9,6 +9,12 @@
       var open = nav.classList.toggle('is-open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !nav.classList.contains('is-open')) return;
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    });
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         nav.classList.remove('is-open');
