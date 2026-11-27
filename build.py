@@ -5,6 +5,7 @@ No Node/npm required — stitches templates/ + static/ into dist/.
 Run: python3 build.py
 """
 import hashlib
+import html
 import json
 import re
 import shutil
@@ -173,6 +174,7 @@ def local_business_schema():
             "addressCountry": "US",
         },
         "areaServed": [{"@type": "City", "name": t} for t in SERVICE_AREA_TOWNS],
+        "sameAs": ["https://instagram.com/neatly_nash"],
     }
 
 
@@ -191,6 +193,16 @@ def faq_schema():
     }
 
 
+def faq_items_html():
+    return "\n".join(
+        f'  <div class="faq-item">\n'
+        f'    <h2>{html.escape(q, quote=False)}</h2>\n'
+        f'    <p class="body-md">{html.escape(a, quote=False)}</p>\n'
+        f'  </div>'
+        for q, a in FAQS
+    )
+
+
 def schema_script(*schemas):
     tags = []
     for s in schemas:
@@ -206,22 +218,35 @@ def read(path):
     return (TEMPLATES / path).read_text()
 
 
-def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None):
-    canonical = f"{SITE_URL}/{url_path}".rstrip("/") + "/" if url_path else f"{SITE_URL}/"
+def mark_current_nav(header_html, url_path):
+    link = f'class="nav-link" href="/{url_path}/"'
+    return header_html.replace(link, f'{link} aria-current="page"')
+
+
+def render_page(*, url_path, title, description, header_partial, content_html, extra_schema=None, noindex=False, extra_head=""):
+    if noindex:
+        indexing = '<meta name="robots" content="noindex">'
+    else:
+        canonical = f"{SITE_URL}/{url_path}".rstrip("/") + "/" if url_path else f"{SITE_URL}/"
+        indexing = (
+            f'<link rel="canonical" href="{canonical}">\n'
+            f'<meta property="og:url" content="{canonical}">'
+        )
     schemas = [local_business_schema()]
     if extra_schema:
         schemas.append(extra_schema)
 
     base = Template(read("base.html"))
     page = base.substitute(
-        TITLE=title,
-        DESCRIPTION=description,
-        CANONICAL=canonical,
-        OG_TITLE=title,
+        TITLE=html.escape(title),
+        DESCRIPTION=html.escape(description),
+        INDEXING=indexing,
+        EXTRA_HEAD=extra_head,
+        OG_TITLE=html.escape(title),
         SCHEMA=schema_script(*schemas),
-        HEADER=read(f"partials/{header_partial}"),
+        HEADER=mark_current_nav(read(f"partials/{header_partial}"), url_path),
         CONTENT=content_html,
-        FOOTER=read("partials/footer.html"),
+        FOOTER=Template(read("partials/footer.html")).substitute(YEAR=date.today().year),
     )
     return page
 
@@ -257,7 +282,7 @@ def fingerprint_asset_urls():
             hashes[url] = hashlib.sha256(asset.read_bytes()).hexdigest()[:10]
         return f"{url}?v={hashes[url]}"
 
-    for path in [*DIST.glob("css/*.css"), *DIST.rglob("*.html")]:
+    for path in [*DIST.glob("css/*.css"), *DIST.rglob("*.html"), DIST / "site.webmanifest"]:
         path.write_text(ASSET_URL.sub(versioned, path.read_text()))
 
 
@@ -281,6 +306,8 @@ def build():
             url_path="", title="Home Organizer in Nashville, TN | Neatly Nash",
             description="Home organizing for kitchens, closets, and drop zones across Nashville, Franklin, Brentwood, and five nearby towns. Free walkthrough, same-day quote.",
             content="pages/index.html",
+            # The hero headline's italic line is the only above-the-fold use of this face.
+            extra_head='<link rel="preload" href="/fonts/cormorant-garamond-500-italic.woff2" as="font" type="font/woff2" crossorigin>',
         ),
         dict(
             url_path="services", title="Home Organizing Services | Neatly Nash",
@@ -295,7 +322,8 @@ def build():
         dict(
             url_path="faq", title="Home Organizer FAQ — Cost, Process & Service Area | Neatly Nash",
             description="What does a home organizer cost in Nashville, how long does a pantry take, and what areas does Neatly Nash serve? Answers to the questions asked most.",
-            content="pages/faq.html", extra_schema=faq_schema(),
+            content="pages/faq.html", content_vars=dict(FAQ_ITEMS=faq_items_html()),
+            extra_schema=faq_schema(),
         ),
         dict(
             url_path="about", title="About Neatly Nash | Book a Free Organizing Walkthrough",
@@ -305,15 +333,19 @@ def build():
     ]
 
     for p in main_pages:
-        html = render_page(
+        content = read(p["content"])
+        if "content_vars" in p:
+            content = Template(content).substitute(p["content_vars"])
+        page_html = render_page(
             url_path=p["url_path"],
             title=p["title"],
             description=p["description"],
             header_partial="header.html",
-            content_html=read(p["content"]),
+            content_html=content,
             extra_schema=p.get("extra_schema"),
+            extra_head=p.get("extra_head", ""),
         )
-        write_page(p["url_path"], html)
+        write_page(p["url_path"], page_html)
         urls.append(p["url_path"])
 
     # -- Town pages -----------------------------------------------------------
@@ -325,14 +357,14 @@ def build():
             C3T=t["c3t"], C3B=t["c3b"], JOBTITLE=t["jobtitle"], JOBBODY=t["jobbody"],
             FAQQ=t["faqq"], FAQA=t["faqa"], CTA=t["cta"],
         )
-        html = render_page(
+        page_html = render_page(
             url_path=t["slug"],
             title=f"Home Organizer in {t['name']}, TN | Neatly Nash",
             description=f"{t['h1']}. {t['faqq']} Free walkthrough, same-day quote, no travel fee in {t['name']}.",
             header_partial="header-town.html",
             content_html=content,
         )
-        write_page(t["slug"], html)
+        write_page(t["slug"], page_html)
         urls.append(t["slug"])
 
     # -- 404 page --------------------------------------------------------------
@@ -344,6 +376,7 @@ def build():
         description="The page you're looking for doesn't exist. Head back to Neatly Nash home organizing in Nashville, TN.",
         header_partial="header.html",
         content_html=read("pages/404.html"),
+        noindex=True,
     )
     (DIST / "404.html").write_text(not_found_html)
 
@@ -352,11 +385,12 @@ def build():
         f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n"
     )
 
-    today = date.today().isoformat()
+    # No <lastmod>: stamping every URL with the build date on each deploy
+    # misreports unchanged pages, and Google stops trusting the field.
     entries = []
     for u in urls:
         loc = f"{SITE_URL}/{u}".rstrip("/") + "/" if u else f"{SITE_URL}/"
-        entries.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n  </url>")
+        entries.append(f"  <url>\n    <loc>{loc}</loc>\n  </url>")
     sitemap = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

@@ -153,6 +153,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-weight: 600;
   color: var(--tan-label);
 }
+.label-optional { font-weight: 400; letter-spacing: .06em; text-transform: none; }
 
 /* ==========================================================================
    Layout helpers
@@ -255,6 +256,12 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-weight: 400;
 }
 .nav-link:hover { color: var(--ink-body); }
+.nav-link[aria-current="page"] {
+  color: var(--ink-body);
+  text-decoration: underline;
+  text-decoration-color: var(--tan);
+  text-underline-offset: 6px;
+}
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -389,6 +396,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .work-gallery-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 26px; flex-wrap: wrap; gap: 10px; }
 .work-gallery-head .section-title { font-size: 36px; }
 .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.photo-grid:focus { outline: none; }
+.photo-grid:focus-visible { outline: 2px solid var(--tan); outline-offset: 4px; border-radius: 12px; }
 .photo-tile {
   aspect-ratio: 4/5;
   border-radius: 12px;
@@ -641,6 +650,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-size: 12px; letter-spacing: .06em; line-height: 1.7; color: var(--tan-label);
   font-weight: 300; text-align: center; padding-top: 14px; border-top: 1px solid var(--rule-lighter);
 }
+.towns-inline li { display: inline-block; white-space: nowrap; }
+.towns-inline li:not(:last-child)::after { content: "\00b7"; margin: 0 .45em; }
 .form-success {
   display: none;
   text-align: center;
@@ -648,6 +659,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .form-success .card-title { font-size: 26px; margin-bottom: 8px; }
 .form-success.is-visible { display: block; }
+.form-success h3:focus { outline: none; }
 .booking-card form.is-hidden { display: none; }
 .form-error {
   font-size: 13px; color: #a5432a; margin-top: -6px;
@@ -674,6 +686,10 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .town-split h2 { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.15; color: var(--ink); margin-bottom: 8px; }
 .town-split .body-sm { font-size: 14.5px; line-height: 1.75; text-wrap: pretty; }
+.not-found { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; }
+.not-found .eyebrow { color: #E4D6C2; }
+.not-found .section-title { margin-top: 14px; }
+.not-found-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .town-cta { display: flex; gap: 14px 22px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .town-cta .sms-line { font-size: 13.5px; color: #E4D6C2; font-weight: 300; border-bottom: 1px solid rgba(228, 214, 194, .35); padding-bottom: 2px; }
 .town-cta .sms-line:hover { color: var(--cream); border-color: var(--melon); }
