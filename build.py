@@ -174,6 +174,7 @@ def local_business_schema():
             "addressCountry": "US",
         },
         "areaServed": [{"@type": "City", "name": t} for t in SERVICE_AREA_TOWNS],
+        "sameAs": ["https://instagram.com/neatly_nash"],
     }
 
 
@@ -237,10 +238,10 @@ def render_page(*, url_path, title, description, header_partial, content_html, e
 
     base = Template(read("base.html"))
     page = base.substitute(
-        TITLE=title,
-        DESCRIPTION=description,
+        TITLE=html.escape(title),
+        DESCRIPTION=html.escape(description),
         INDEXING=indexing,
-        OG_TITLE=title,
+        OG_TITLE=html.escape(title),
         SCHEMA=schema_script(*schemas),
         HEADER=mark_current_nav(read(f"partials/{header_partial}"), url_path),
         CONTENT=content_html,
@@ -380,11 +381,12 @@ def build():
         f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n"
     )
 
-    today = date.today().isoformat()
+    # No <lastmod>: stamping every URL with the build date on each deploy
+    # misreports unchanged pages, and Google stops trusting the field.
     entries = []
     for u in urls:
         loc = f"{SITE_URL}/{u}".rstrip("/") + "/" if u else f"{SITE_URL}/"
-        entries.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n  </url>")
+        entries.append(f"  <url>\n    <loc>{loc}</loc>\n  </url>")
     sitemap = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
