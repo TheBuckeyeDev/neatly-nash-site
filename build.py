@@ -5,6 +5,7 @@ No Node/npm required — stitches templates/ + static/ into dist/.
 Run: python3 build.py
 """
 import hashlib
+import html
 import json
 import re
 import shutil
@@ -191,6 +192,16 @@ def faq_schema():
     }
 
 
+def faq_items_html():
+    return "\n".join(
+        f'  <div class="faq-item">\n'
+        f'    <h2>{html.escape(q, quote=False)}</h2>\n'
+        f'    <p class="body-md">{html.escape(a, quote=False)}</p>\n'
+        f'  </div>'
+        for q, a in FAQS
+    )
+
+
 def schema_script(*schemas):
     tags = []
     for s in schemas:
@@ -307,7 +318,8 @@ def build():
         dict(
             url_path="faq", title="Home Organizer FAQ — Cost, Process & Service Area | Neatly Nash",
             description="What does a home organizer cost in Nashville, how long does a pantry take, and what areas does Neatly Nash serve? Answers to the questions asked most.",
-            content="pages/faq.html", extra_schema=faq_schema(),
+            content="pages/faq.html", content_vars=dict(FAQ_ITEMS=faq_items_html()),
+            extra_schema=faq_schema(),
         ),
         dict(
             url_path="about", title="About Neatly Nash | Book a Free Organizing Walkthrough",
@@ -317,15 +329,18 @@ def build():
     ]
 
     for p in main_pages:
-        html = render_page(
+        content = read(p["content"])
+        if "content_vars" in p:
+            content = Template(content).substitute(p["content_vars"])
+        page_html = render_page(
             url_path=p["url_path"],
             title=p["title"],
             description=p["description"],
             header_partial="header.html",
-            content_html=read(p["content"]),
+            content_html=content,
             extra_schema=p.get("extra_schema"),
         )
-        write_page(p["url_path"], html)
+        write_page(p["url_path"], page_html)
         urls.append(p["url_path"])
 
     # -- Town pages -----------------------------------------------------------
@@ -337,14 +352,14 @@ def build():
             C3T=t["c3t"], C3B=t["c3b"], JOBTITLE=t["jobtitle"], JOBBODY=t["jobbody"],
             FAQQ=t["faqq"], FAQA=t["faqa"], CTA=t["cta"],
         )
-        html = render_page(
+        page_html = render_page(
             url_path=t["slug"],
             title=f"Home Organizer in {t['name']}, TN | Neatly Nash",
             description=f"{t['h1']}. {t['faqq']} Free walkthrough, same-day quote, no travel fee in {t['name']}.",
             header_partial="header-town.html",
             content_html=content,
         )
-        write_page(t["slug"], html)
+        write_page(t["slug"], page_html)
         urls.append(t["slug"])
 
     # -- 404 page --------------------------------------------------------------
