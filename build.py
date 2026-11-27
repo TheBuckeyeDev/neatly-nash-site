@@ -221,7 +221,7 @@ def render_page(*, url_path, title, description, header_partial, content_html, e
         SCHEMA=schema_script(*schemas),
         HEADER=read(f"partials/{header_partial}"),
         CONTENT=content_html,
-        FOOTER=read("partials/footer.html"),
+        FOOTER=Template(read("partials/footer.html")).substitute(YEAR=date.today().year),
     )
     return page
 
