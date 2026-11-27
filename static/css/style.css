@@ -647,6 +647,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-size: 12px; letter-spacing: .06em; line-height: 1.7; color: var(--tan-label);
   font-weight: 300; text-align: center; padding-top: 14px; border-top: 1px solid var(--rule-lighter);
 }
+.towns-inline li { display: inline-block; white-space: nowrap; }
+.towns-inline li:not(:last-child)::after { content: "\00b7"; margin: 0 .45em; }
 .form-success {
   display: none;
   text-align: center;
