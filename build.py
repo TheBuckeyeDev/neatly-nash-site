@@ -4,7 +4,9 @@ Static site generator for the Neatly Nash marketing site.
 No Node/npm required — stitches templates/ + static/ into dist/.
 Run: python3 build.py
 """
+import hashlib
 import json
+import re
 import shutil
 from datetime import date
 from pathlib import Path
@@ -235,6 +237,30 @@ def write_page(url_path, html):
     return out_file
 
 
+ASSET_URL = re.compile(r"(?<![\w.])/(?:css|js|images|fonts)/[\w./-]+\.(?:css|js|jpe?g|png|webp|svg|woff2)")
+
+
+def fingerprint_asset_urls():
+    """Append ?v=<content hash> to local asset URLs in the built HTML and CSS.
+
+    netlify.toml caches /css, /js, /images and /fonts as immutable for a year,
+    so a changed file must get a new URL or returning visitors keep the old one.
+    """
+    hashes = {}
+
+    def versioned(match):
+        url = match.group(0)
+        if url not in hashes:
+            asset = DIST / url.lstrip("/")
+            if not asset.is_file():
+                return url
+            hashes[url] = hashlib.sha256(asset.read_bytes()).hexdigest()[:10]
+        return f"{url}?v={hashes[url]}"
+
+    for path in [*DIST.glob("css/*.css"), *DIST.rglob("*.html")]:
+        path.write_text(ASSET_URL.sub(versioned, path.read_text()))
+
+
 def build():
     if DIST.exists():
         shutil.rmtree(DIST)
@@ -338,6 +364,8 @@ def build():
         + "\n</urlset>\n"
     )
     (DIST / "sitemap.xml").write_text(sitemap)
+
+    fingerprint_asset_urls()
 
     print(f"Built {len(urls)} pages to {DIST}")
 
