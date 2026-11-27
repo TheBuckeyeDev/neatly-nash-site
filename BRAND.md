@@ -23,6 +23,10 @@ PNG is best for apps, Canva, and social uploads.
 - `-transparent-for-light`: dark logo, no background, for placing on white or light photos
 - `-transparent-for-dark`: light logo, no background, for placing on brown or dark photos
 
+The monogram also comes in one color (`neatly-nash-monogram-one-color-cream` and
+`-one-color-bark`, no background) for stamps, embroidery, engraving, and colored
+backgrounds like tan or melon where sage would disappear.
+
 ## Colors
 
 | Name | Hex | Used for |
