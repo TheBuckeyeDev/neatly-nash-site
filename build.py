@@ -160,7 +160,7 @@ def local_business_schema():
         "@type": "LocalBusiness",
         "@id": f"{SITE_URL}/#business",
         "name": SITE_NAME,
-        "image": f"{SITE_URL}/images/og-image.svg",
+        "image": f"{SITE_URL}/images/og-image.jpg",
         "url": f"{SITE_URL}/",
         "telephone": PHONE_TEL,
         "email": EMAIL,
@@ -244,6 +244,7 @@ def build():
     shutil.copytree(STATIC / "css", DIST / "css")
     shutil.copytree(STATIC / "js", DIST / "js")
     shutil.copytree(STATIC / "images", DIST / "images")
+    shutil.copytree(STATIC / "fonts", DIST / "fonts")
 
     urls = []
 

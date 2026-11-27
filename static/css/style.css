@@ -1,3 +1,21 @@
+/* Self-hosted Google Fonts (latin subset, SIL OFL) */
+@font-face {
+  font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url(/fonts/cormorant-garamond-600.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 500; font-display: swap;
+  src: url(/fonts/cormorant-garamond-500-italic.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Jost'; font-style: normal; font-weight: 300 600; font-display: swap;
+  src: url(/fonts/jost-variable.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Outfit'; font-style: normal; font-weight: 200; font-display: swap;
+  src: url(/fonts/outfit-200.woff2) format('woff2');
+}
+
 /* ==========================================================================
    Neatly Nash — design tokens
    Source: Handoff README (Design Tokens) + Neatly Nash 01/03/07 .dc.html
@@ -15,7 +33,11 @@
   --cream-warm: #F3EBDE;
   --tan: #C68A50;
   --tan-mid: #A98C6A;
-  --tan-label: #A08962;
+  /* Text-on-cream variants of the tans/sage, darkened just enough for WCAG AA contrast. */
+  --tan-label: #786749;
+  --tan-eyebrow: #7B654D;
+  --tan-accent-text: #AF7A47;
+  --sage-label: #5E6D63;
   --rule: #E0CDAE;
   --rule-light: #EFE3D0;
   --rule-lighter: #F2E9DA;
@@ -24,7 +46,7 @@
   --ink-body: #3a3128;
   --ink-mid: #5c5245;
   --ink-muted: #6b6053;
-  --ink-faint: #8b7c68;
+  --ink-faint: #746857;
   --photo-fallback: #DCD3C4;
 
   --font-display: 'Cormorant Garamond', serif;
@@ -51,9 +73,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
+picture { display: contents; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }
 h1, h2, h3, p, dl, dd { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--tan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.btn:focus-visible { border-radius: 999px; }
 ul { margin: 0; padding: 0; list-style: none; }
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -75,7 +106,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-size: 12px;
   letter-spacing: .3em;
   text-transform: uppercase;
-  color: var(--tan-mid);
+  color: var(--tan-eyebrow);
   font-weight: 500;
 }
 .display-1 {
@@ -88,7 +119,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .display-1 em, .display-2 em, .section-title em {
   font-style: italic;
   font-weight: 500;
-  color: var(--tan);
+  color: var(--tan-accent-text);
 }
 .page-h1 {
   font-family: var(--font-display);
@@ -110,8 +141,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   color: var(--ink);
 }
 .body-lg { font-size: 17px; line-height: 1.75; font-weight: 300; color: var(--ink-mid); }
-.body-md { font-size: 15px; line-height: 1.75; font-weight: 300; color: var(--ink-mid); }
-.body-sm { font-size: 14px; line-height: 1.7; font-weight: 300; color: var(--ink-muted); }
+.body-md { font-size: 15px; line-height: 1.75; font-weight: 400; color: var(--ink-mid); }
+.body-sm { font-size: 14px; line-height: 1.7; font-weight: 400; color: var(--ink-muted); }
 .label {
   font-size: 11px;
   letter-spacing: .18em;
@@ -451,9 +482,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 .project-body .card-title { font-size: 26px; margin-bottom: 18px; }
 .before-now { display: grid; grid-template-columns: 64px 1fr; gap: 12px 16px; align-items: baseline; }
 .ba-label { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; }
-.ba-label.before { color: #B3A48C; }
-.ba-label.now { color: var(--sage-deep); }
-.ba-text { font-size: 14.5px; line-height: 1.65; font-weight: 300; color: var(--ink-faint); }
+.ba-label.before { color: var(--ink-faint); }
+.ba-label.now { color: var(--sage-label); }
+.ba-text { font-size: 14.5px; line-height: 1.65; font-weight: 400; color: var(--ink-faint); }
 .ba-text.now { font-size: 15px; color: var(--ink-body); }
 .ba-divider { grid-column: 1 / -1; height: 1px; background: var(--rule-light); }
 
@@ -473,11 +504,11 @@ ul { margin: 0; padding: 0; list-style: none; }
    ========================================================================== */
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 60px var(--section-x); max-width: 1060px; margin: 0 auto; align-items: start; }
 .about-card { border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-raised); border: 1px solid rgba(120,90,50,.18); background: var(--cream); }
-.about-photo { height: 190px; background: var(--photo-fallback); position: relative; }
-.about-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.about-photo { height: 280px; background: var(--photo-fallback); position: relative; }
+.about-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; position: absolute; inset: 0; }
 .about-copy { padding: 34px 32px; }
 .about-copy .card-title { font-size: 34px; line-height: 1.12; }
-.about-copy p { font-size: 15px; line-height: 1.8; color: var(--ink-mid); font-weight: 300; margin-top: 14px; text-wrap: pretty; }
+.about-copy p { font-size: 15px; line-height: 1.8; color: var(--ink-mid); font-weight: 400; margin-top: 14px; text-wrap: pretty; }
 
 .booking-card {
   border-radius: 16px; box-shadow: var(--shadow-raised);
@@ -581,7 +612,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .footer-brand .logo span { font-size: 26px; text-indent: 0; }
 .footer-brand .logo .logo-neatly, .footer-brand .logo .logo-nash { color: var(--cream); }
 .footer-brand p { margin-top: 14px; font-size: 13.5px; line-height: 1.7; color: #EFE2CC; font-weight: 300; max-width: 32ch; }
-.footer-col h4 {
+.footer-col h2 {
   font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
   color: var(--melon); font-weight: 600; margin-bottom: 14px;
 }
@@ -589,6 +620,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .footer-col a, .footer-col span { font-size: 13.5px; color: #F3E8D6; font-weight: 300; }
 .footer-col a:hover { color: var(--melon); }
 .footer-bottom {
+  max-width: 1148px;
+  margin: 0 auto;
   border-top: 1px solid rgba(251,247,238,.14);
   padding: 22px var(--section-x);
   display: flex; justify-content: space-between; align-items: center;
@@ -623,6 +656,10 @@ ul { margin: 0; padding: 0; list-style: none; }
   }
 
   .retainer-inner { grid-template-columns: 1fr; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 34px 20px; }
+  .footer-brand { grid-column: 1 / -1; }
+  .about-photo { height: 240px; }
 
   .section-title { font-size: 32px; }
   .page-h1 { font-size: 38px; }

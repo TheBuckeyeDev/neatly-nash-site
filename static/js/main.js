@@ -69,7 +69,8 @@
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(data).toString()
       })
-        .then(function () {
+        .then(function (res) {
+          if (!res.ok) throw new Error('Form submit failed: ' + res.status);
           form.classList.add('is-hidden');
           if (successEl) successEl.classList.add('is-visible');
         })
