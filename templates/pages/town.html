@@ -1,7 +1,18 @@
 <div class="town-hero">
-  <p class="eyebrow">Serving $TOWNNAME, TN</p>
-  <h1 class="page-h1">$H1</h1>
-  <p class="body-lg">$INTRO</p>
+  <div class="town-intro">
+    <div>
+      <p class="eyebrow">Serving $TOWNNAME, TN</p>
+      <h1 class="page-h1">$H1</h1>
+      <p class="body-lg">$INTRO</p>
+    </div>
+    <div class="town-photo">
+      <picture>
+        <source type="image/webp" srcset="/images/about-600.webp 600w, /images/about-1000.webp 1000w" sizes="(max-width: 860px) 100vw, 420px">
+        <img src="/images/about.jpg" width="1000" height="1500" alt="Krista, the founder of Neatly Nash, organizing a pantry" loading="eager">
+      </picture>
+      <span class="photo-caption">Krista &middot; Neatly Nash</span>
+    </div>
+  </div>
 
   <div class="proof-cards">
     <div class="proof-card">
@@ -28,9 +39,15 @@
       <p class="body-sm">$FAQA</p>
     </div>
   </div>
+</div>
 
-  <div class="town-cta">
-    <a class="btn btn-primary" href="/about/#book">$CTA</a>
-    <a class="sms-line" href="sms:+16155550148">Or text me at (615) 555-0148</a>
-  </div>
+<div class="closing-cta-wrap">
+  <section class="closing-cta">
+    <h2 class="section-title">Start with one room.</h2>
+    <p class="body-md">A free twenty-minute walkthrough, at your house or over video. You'll have a price from me the same day.</p>
+    <div class="town-cta">
+      <a class="btn btn-melon" href="/about/#book">$CTA</a>
+      <a class="sms-line" href="sms:+16155550148">Or text me at (615) 555-0148</a>
+    </div>
+  </section>
 </div>
