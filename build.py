@@ -346,6 +346,9 @@ def build():
             extra_schema=p.get("extra_schema"),
             extra_head=p.get("extra_head", ""),
         )
+        if p["url_path"] == "":
+            # The homepage has its own quote form; keep visitors on the page instead of sending them to /about/.
+            page_html = page_html.replace('href="/about/#book"', 'href="#quote"')
         write_page(p["url_path"], page_html)
         urls.append(p["url_path"])
 
