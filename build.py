@@ -56,7 +56,7 @@ TOWNS = [
         h1="Home organizing in Brentwood",
         intro="Brentwood houses are big, which sounds like it should make this easier and usually makes it harder. More square footage means more places for a thing to end up, and a bonus room that quietly becomes storage. I work in Governors Club, Annandale, Sunset Hills, and the older streets near Maryland Farms, and the job here is almost always about giving things one obvious home instead of four possible ones.",
         c1t="Big houses, real plans", c1b="Whole-home work here runs in phases so you're never living in a construction zone.",
-        c2t="Discreet and insured", c2b="One person, in and out, no crew in your house and nothing photographed without your okay.",
+        c2t="One person, no crew", c2b="One person, in and out, no crew in your house and nothing photographed without your okay.",
         c3t="Twenty-five minutes away", c3b="Close enough that a follow-up visit is easy, which is when most of this actually gets fine-tuned.",
         jobtitle="A recent Brentwood project",
         jobbody="A bonus room off the garage that had become the place everything went to be dealt with later. Two days, four categories, one carload of donations, and the family got a working playroom back out of it.",
@@ -346,6 +346,9 @@ def build():
             extra_schema=p.get("extra_schema"),
             extra_head=p.get("extra_head", ""),
         )
+        if p["url_path"] == "":
+            # The homepage has its own quote form; keep visitors on the page instead of sending them to /about/.
+            page_html = page_html.replace('href="/about/#book"', 'href="#quote"')
         write_page(p["url_path"], page_html)
         urls.append(p["url_path"])
 

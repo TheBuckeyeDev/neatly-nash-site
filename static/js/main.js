@@ -23,6 +23,27 @@
     });
   }
 
+  // Phone-only bar with the booking button: shown once the hero's button has
+  // scrolled away, hidden again while the quote form is on screen.
+  var sticky = document.querySelector('[data-sticky-cta]');
+  var hero = document.querySelector('.home-hero .btn');
+  var quote = document.getElementById('quote');
+  if (sticky && hero && quote && 'IntersectionObserver' in window) {
+    var heroVisible = true;
+    var quoteVisible = false;
+    var update = function () {
+      sticky.classList.toggle('is-visible', !heroVisible && !quoteVisible);
+    };
+    new IntersectionObserver(function (entries) {
+      heroVisible = entries[0].isIntersecting;
+      update();
+    }).observe(hero);
+    new IntersectionObserver(function (entries) {
+      quoteVisible = entries[0].isIntersecting;
+      update();
+    }).observe(quote);
+  }
+
   // Booking form: client-side validation on name + email, AJAX submit to
   // Netlify Forms, inline success state (no navigation away).
   var form = document.querySelector('form[data-booking-form]');
