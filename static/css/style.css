@@ -465,14 +465,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 .service-card:target, .retainer-inner:target { box-shadow: 0 0 0 3px var(--tan), var(--shadow-card); }
 .home-quote-card .form-field input { background: #fff; }
 
-.photo-caption {
-  position: absolute; left: 16px; bottom: 16px; z-index: 1;
-  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--cream); font-weight: 500;
-  background: rgba(58, 42, 24, .62);
-  padding: 6px 12px; border-radius: 999px;
-}
-
 /* ==========================================================================
    Closing CTA
    ========================================================================== */

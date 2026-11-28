@@ -13,7 +13,6 @@ IMAGES = Path(__file__).parent / "static" / "images"
 # source file -> output widths. Keep in sync with the srcset attributes in templates/.
 WIDTHS = {
     "hero.jpg": [640, 1200],
-    "about.jpg": [600, 1000],
     "work-1.jpg": [480, 800],
     "work-2.jpg": [480, 800],
     "work-3.jpg": [480, 800],
